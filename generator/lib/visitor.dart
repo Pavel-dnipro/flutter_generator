@@ -2,9 +2,10 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/visitor.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'annotations.dart';
+import 'annotation.dart';
 
 class Visitor extends SimpleElementVisitor<void> {
+  //ключ - тип ошибки, знчение - список инстансов относящихся к ней
   String className = '';
   Map<String, String> printData = {};
 
@@ -17,11 +18,11 @@ class Visitor extends SimpleElementVisitor<void> {
   @override
   void visitFieldElement(FieldElement element) {
     var instanceName = element.name;
-    var data = TypeChecker.fromRuntime(PrintAnn)
+    var data = const TypeChecker.fromRuntime(PrintAnn)
             .annotationsOf(element)
             .first
             .getField('data')
-            ?.toString() ??
+            ?.toStringValue() ??
         '';
 
     printData[instanceName] = data;
